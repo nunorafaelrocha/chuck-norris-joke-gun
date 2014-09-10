@@ -1,4 +1,4 @@
-// AnguarJS APP
+// AngularJS APP
 var app = angular.module('cnjgApp', [])
   .controller('homeCtr', function ($scope, $http) {
     
@@ -15,13 +15,9 @@ var app = angular.module('cnjgApp', [])
       
       $http.get('http://api.icndb.com/jokes/random')
         .success(function (response) {
-          
           if (response.type === "success") {
             $scope.current_joke = response.value.joke;            
           }
-          
         });
-
     };
-    
   });
