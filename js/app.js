@@ -18,19 +18,21 @@ var app = angular.module('cnjgApp', [])
 
              sound.play();
 
-             $http.get('http://api.icndb.com/jokes/random')
-                .success(function (response) {
-                    if ($scope.current_joke) {
-                        $scope.previous_jokes.push($scope.current_joke);
-                    };
-                    if (response.type === "success") {
-                        $scope.current_joke = response.value.joke;
-                    }
-                    is_getnewjoke_locked = false;
-               })
-                .error(function  () {
-                    is_getnewjoke_locked = false;
-                });
+            $http.get('http://api.icndb.com/jokes/random')
+              .success(function (response) {
+                if ($scope.current_joke) {
+                  $scope.previous_jokes.push($scope.current_joke);
+                };
+
+                if (response.type === "success") {
+                  $scope.current_joke = response.value.joke;
+                }
+
+                is_getnewjoke_locked = false;
+              })
+              .error(function  () {
+                is_getnewjoke_locked = false;
+              });
         };
     };
   });
