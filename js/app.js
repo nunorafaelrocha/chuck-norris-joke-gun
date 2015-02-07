@@ -2,37 +2,36 @@
 var app = angular.module('cnjgApp', [])
   .controller('homeCtr', function ($scope, $http) {
 
-    // the sound
     var sound = new Audio('sounds/High_Definition_Machine_gun.mp3');
+    var isLocked = false;
 
-    // the joke
     $scope.current_joke = "";
-    // previous jokes
     $scope.previous_jokes = [];
 
-    // get new joke function
-    var is_getnewjoke_locked = false;
+    // Get new joke function.
     $scope.getNewJoke = function () {
-        if (!is_getnewjoke_locked) {
-            is_getnewjoke_locked = true;
+      if (isLocked) {
+        return;
+      }
 
-             sound.play();
+      isLocked = true;
 
-            $http.get('http://api.icndb.com/jokes/random')
-              .success(function (response) {
-                if ($scope.current_joke) {
-                  $scope.previous_jokes.push($scope.current_joke);
-                };
+      $http.get('http://api.icndb.com/jokes/random')
+        .success(function (response) {
+          sound.play();
 
-                if (response.type === "success") {
-                  $scope.current_joke = response.value.joke;
-                }
+          if ($scope.current_joke) {
+            $scope.previous_jokes.push($scope.current_joke);
+          }
 
-                is_getnewjoke_locked = false;
-              })
-              .error(function  () {
-                is_getnewjoke_locked = false;
-              });
-        };
-    };
+          if (response.type === "success") {
+            $scope.current_joke = response.value.joke;
+          }
+
+          isLocked = false;
+        })
+        .error(function  () {
+          isLocked = false;
+        });
+    }
   });
